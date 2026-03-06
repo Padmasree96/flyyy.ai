@@ -2,7 +2,7 @@
 import pandas as pd
 from typing import Optional
 
-from app.config.settings import HEADER_KEYWORDS, HEADER_SCAN_LIMIT
+from ..config.settings import HEADER_KEYWORDS, HEADER_SCAN_LIMIT
 
 
 def detect_header_row(df: pd.DataFrame) -> int:
@@ -13,7 +13,9 @@ def detect_header_row(df: pd.DataFrame) -> int:
     scan_limit = min(len(df), HEADER_SCAN_LIMIT)
 
     for i in range(scan_limit):
-        row_text = " ".join(df.iloc[i].astype(str).str.lower())
+        # Convert row to a list of strings and join them for keyword scanning
+        row_values = df.iloc[i].fillna("").astype(str).tolist()
+        row_text = " ".join(row_values).lower()
         score = sum(1 for kw in HEADER_KEYWORDS if kw in row_text)
 
         if score > best_score:

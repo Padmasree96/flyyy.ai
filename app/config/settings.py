@@ -57,6 +57,10 @@ EPC_CATEGORY_RULES = {
         "transformer", "dg set", "substation",
         "switchgear", "breaker", "ups"
     ],
+    "Plumbing": [
+        "pipe", "valve", "tap", "cock",
+        "pump", "chilled water", "drain", "water supply"
+    ],
     "Lighting": [
         "light", "lamp", "led", "downlight",
         "tube", "flood", "bulkhead", "lighting"
@@ -69,11 +73,7 @@ EPC_CATEGORY_RULES = {
         "panel", "distribution board",
         "rmu", "ht panel", "lt panel", "control panel"
     ],
-    "Plumbing": [
-        "pipe", "valve", "tap", "cock",
-        "pump", "chilled water", "drain", "water supply"
-    ],
-    "Civil Materials": [
+    "Civil materials": [
         "cement", "sand", "brick",
         "aggregate", "concrete",
         "bitumen", "steel", "reinforcement"

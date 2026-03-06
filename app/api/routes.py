@@ -3,8 +3,13 @@ from fastapi import APIRouter, UploadFile, Query, HTTPException
 import io
 from loguru import logger
 
-from app.services.excel_analyzer import process_excel
-from app.services.boq_extractor import consolidate_duplicates, group_by_category
+from ..config.settings import get_config
+from ..services.boq_table_detector import detect_header_row
+from ..services.column_identifier import identify_columns
+from ..services.boq_extractor import extract_items, consolidate_duplicates, group_by_category
+from ..services.excel_analyzer import process_excel
+from ..utils.product_normalizer import normalize_products
+from ..models.boq_schema import ExtractedItem
 
 router = APIRouter()
 
@@ -48,20 +53,25 @@ async def extract_excel_data(
         # 1. Validate
         contents = await validate_file(file)
 
-        # 2-9. Process all sheets
+        # 2-8. Process all sheets (Load, Loop, Header, Map, Filter, Extract)
         result = process_excel(io.BytesIO(contents), industry=industry)
-
-        # 10. Deduplicate & final clean
         items = result["items"]
+
+        # 9. Normalize Product Names (Fuzzy Merge)
+        items = normalize_products(items)
+
+        # 10. Classify EPC Category (Already done in extract_items, but re-consolidated here)
+        
+        # 11. Merge Duplicate Materials (Final Exact Grouping)
         items = [i for i in items if i["quantity"] > 0]
         items = consolidate_duplicates(items)
 
         logger.info(f"Final output: {len(items)} items from {result['total_sheets']} sheet(s).")
 
-        # 11. Group by EPC category
+        # 12. Return Structured BOQ Output
+        # Grouping by category (optional extra step for response)
         categories = group_by_category(items)
 
-        # 12. Response
         return {
             "total_sheets": result["total_sheets"],
             "sheets_with_data": result["sheets_with_data"],

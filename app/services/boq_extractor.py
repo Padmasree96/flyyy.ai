@@ -5,16 +5,16 @@ from typing import List, Dict
 from collections import defaultdict
 from loguru import logger
 
-from app.config.settings import MAX_REASONABLE_QUANTITY
-from app.utils.text_cleaner import (
+from ..config.settings import MAX_REASONABLE_QUANTITY
+from ..utils.text_cleaner import (
     clean_text,
     clean_quantity,
     is_valid_product,
     is_attribute_line,
     contains_material_keyword,
 )
-from app.services.column_identifier import identify_columns
-from app.services.category_classifier import classify_category
+from .column_identifier import identify_columns
+from .category_classifier import classify_category
 
 
 # ─────────────────────────────────────────────

@@ -3,9 +3,9 @@ import pandas as pd
 from typing import List, Dict
 from loguru import logger
 
-from app.config.settings import HEADER_KEYWORDS, HEADER_SCAN_LIMIT, get_config
-from app.services.boq_table_detector import detect_header_row
-from app.services.boq_extractor import extract_items
+from ..config.settings import HEADER_KEYWORDS, HEADER_SCAN_LIMIT, get_config
+from .boq_table_detector import detect_header_row
+from .boq_extractor import extract_items
 
 
 def process_excel(file_stream, industry: str = "construction") -> Dict:

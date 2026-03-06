@@ -2,7 +2,7 @@
 import re
 from typing import Any, List
 
-from app.config.settings import (
+from ..config.settings import (
     INVALID_ROW_KEYWORDS,
     SECTION_KEYWORDS,
     MAX_PRODUCT_LENGTH,

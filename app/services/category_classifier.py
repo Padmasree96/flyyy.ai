@@ -1,5 +1,5 @@
 # ─── EPC Category Classification ───
-from app.config.settings import EPC_CATEGORY_RULES
+from ..config.settings import EPC_CATEGORY_RULES
 
 
 def classify_category(product: str) -> str:
