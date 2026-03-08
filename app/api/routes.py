@@ -90,7 +90,12 @@ async def extract_excel_data(
 
 
 @router.post("/upload-excel")
-async def upload_excel_file(file: UploadFile):
+async def upload_excel_file(
+    file: UploadFile,
+    industry: str = Query(
+        "construction", description="Target industry for AI context"
+    )
+):
     # 1. Save the file temporarily
     with open("temp.xlsx", "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -99,7 +104,7 @@ async def upload_excel_file(file: UploadFile):
     messy_text = read_excel_to_text("temp.xlsx")
     
     # 3. Send to AI to clean up (Step 3)
-    final_boq = extract_with_ai(messy_text)
+    final_boq = extract_with_ai(messy_text, industry=industry)
     
     # 4. Send the neat list back to the user!
     return final_boq
